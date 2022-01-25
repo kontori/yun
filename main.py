@@ -152,12 +152,12 @@ class Yun:
         self.now_time = 0
         self.task_list = []
         self.task_count = 0
-        for point in random_points:
+        for point_index, point in enumerate(random_points):
             if self.now_dist / 1000 < min_distance or self.myLikes < self.raMinDislikes:
                 self.manageList.append({
                     'point': point,
                     'marked': 'Y',
-                    'index': random_points.index(point)
+                    'index': point_index
                 })
                 self.add_task(point)
                 self.myLikes += 1
@@ -281,11 +281,9 @@ class Yun:
         sleep_time = self.now_time / (self.task_count + 1)
         print('等待' + format(sleep_time, '.2f') + '秒...')
         time.sleep(sleep_time)
-        for task in self.task_list:
-            task_index = self.task_list.index(task)
+        for task_index, task in enumerate(self.task_list):
             print('开始处理第' + str(task_index + 1) + '个点...')
-            for split in task['points']:
-                split_index = task['points'].index(split)
+            for split_index, split in enumerate(task['points']):
                 self.split(split)
                 print('  第' + str(split_index + 1) + '次splitPoint发送成功！等待' + format(sleep_time, '.2f') + '秒...')
                 time.sleep(sleep_time)
