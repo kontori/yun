@@ -38,6 +38,8 @@ cadence_min_offset = int(conf.get("Run", "cadence_min_offset"))
 cadence_max_offset = int(conf.get("Run", "cadence_max_offset"))
 split_count = int(conf.get("Run", "split_count"))
 exclude_points = json.loads(conf.get("Run", "exclude_points"))
+min_consume_offset = float(conf.get("Run", "min_consume_offset"))
+max_consume_offset = float(conf.get("Run", "max_consume_offset"))
 
 
 def update():
@@ -175,6 +177,8 @@ class Yun:
                 self.add_task(self.manageList[index]['point'])
                 index = (index + 1) % self.raDislikes
 
+        self.now_time *= random.uniform(min_consume_offset, max_consume_offset)
+        self.now_time = int(self.now_time)
         print('打卡点标记完成！本次将打卡' + str(self.myLikes) + '个点，处理' + str(len(self.task_list)) + '个点，总计'
               + format(self.now_dist / 1000, '.2f')
               + '公里，将耗时' + str(self.now_time // 60) + '分' + str(self.now_time % 60) + '秒')

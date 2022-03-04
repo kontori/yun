@@ -80,7 +80,7 @@ point = 117.205608,31.772887
 exclude_points = ["117.209175,31.774432"]
 # 最少公里数，float
 min_distance = 2
-# 以下两个配置只会影响单点配速，即决定路线是绿色、黄色还是红色，最终配速总会是4.0左右
+# 以下两个配置只会影响单点配速，即决定路线是绿色、黄色还是红色，最终基准配速总会是4.0左右
 # 具体范围见云运动公告
 # 最小配速偏移量，float
 single_mileage_min_offset = 1
@@ -92,6 +92,10 @@ cadence_min_offset = 60
 cadence_max_offset = -100
 # 单次发送split_point个数，如果你不知道这个是什么，就不要修改
 split_count = 10
+# 最终配速最小偏移倍率
+min_consume_offset = 1.2
+# 最终配速最大偏移倍率
+max_consume_offset = 1.4
 ```
 
 ### 5. 运行
