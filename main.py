@@ -341,6 +341,7 @@ if __name__ == '__main__':
                 d = school_list()
                 my_host = d['schoolUrl']
                 s_id = d['schoolId']
+                print(my_host)
                 while my_token == '':
                     name = input("请输入学号：")
                     word = input("请输入密码：")
