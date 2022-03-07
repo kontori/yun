@@ -321,7 +321,7 @@ if __name__ == '__main__':
     try:
         if my_key == '':
             my_key = input("未能获取高德地图Key。请输入：")
-            conf.set("User", "key", my_key)
+            conf.set("User", "map_key", my_key)
             update()
         if my_device_id == '':
             choice = input("未能获取DeviceId。手动输入？1.输入 2.随机生成\n")
