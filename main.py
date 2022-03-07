@@ -38,8 +38,8 @@ cadence_min_offset = int(conf.get("Run", "cadence_min_offset"))
 cadence_max_offset = int(conf.get("Run", "cadence_max_offset"))
 split_count = int(conf.get("Run", "split_count"))
 exclude_points = json.loads(conf.get("Run", "exclude_points"))
-min_consume_offset = float(conf.get("Run", "min_consume_offset"))
-max_consume_offset = float(conf.get("Run", "max_consume_offset"))
+min_consume = float(conf.get("Run", "min_consume"))
+max_consume = float(conf.get("Run", "max_consume"))
 
 
 def update():
@@ -177,8 +177,7 @@ class Yun:
                 self.add_task(self.manageList[index]['point'])
                 index = (index + 1) % self.raDislikes
 
-        self.now_time *= random.uniform(min_consume_offset, max_consume_offset)
-        self.now_time = int(self.now_time)
+        self.now_time = int(random.uniform(min_consume, max_consume) * 60 * (self.now_dist / 1000))
         print('打卡点标记完成！本次将打卡' + str(self.myLikes) + '个点，处理' + str(len(self.task_list)) + '个点，总计'
               + format(self.now_dist / 1000, '.2f')
               + '公里，将耗时' + str(self.now_time // 60) + '分' + str(self.now_time % 60) + '秒')
@@ -206,7 +205,6 @@ class Yun:
         split_point = []
         for path in j['data']['paths']:
             self.now_dist += path['distance']
-            self.now_time += path['duration']
             path['steps'][-1]['polyline'] += ';' + point
             for step in path['steps']:
                 polyline = step['polyline']
@@ -341,7 +339,6 @@ if __name__ == '__main__':
                 d = school_list()
                 my_host = d['schoolUrl']
                 s_id = d['schoolId']
-                print(my_host)
                 while my_token == '':
                     name = input("请输入学号：")
                     word = input("请输入密码：")
