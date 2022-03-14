@@ -58,7 +58,7 @@ school_host = http://210.45.246.53:8080
 # 云运动的加密密钥
 key = YUNZHIEE
 # 云运动app版本
-app_edition = 2.1.1
+app_edition = 2.2.2
 
 [User]
 # 用户token，可通过抓包获取。如果你不知道怎么获得，请留空，运行时会引导登录
@@ -93,9 +93,9 @@ cadence_max_offset = -100
 # 单次发送split_point个数，如果你不知道这个是什么，就不要修改
 split_count = 10
 # 最终配速最小值
-min_consume_offset = 4.50
+min_consume = 4.50
 # 最终配速最大值
-max_consume_offset = 5.50
+max_consume = 5.50
 ```
 
 ### 5. 运行
