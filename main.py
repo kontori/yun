@@ -5,6 +5,7 @@ import requests
 import json
 import configparser
 import os
+from typing import List, Dict
 
 from pyDes import des, CBC, PAD_PKCS5
 
@@ -32,6 +33,7 @@ my_sys_edition = conf.get("User", "sys_edition")
 
 my_point = conf.get("Run", "point")
 min_distance = float(conf.get("Run", "min_distance"))
+allow_overflow_distance = float(conf.get("Run", "allow_overflow_distance"))
 single_mileage_min_offset = float(conf.get("Run", "single_mileage_min_offset"))
 single_mileage_max_offset = float(conf.get("Run", "single_mileage_max_offset"))
 cadence_min_offset = int(conf.get("Run", "cadence_min_offset"))
@@ -135,7 +137,6 @@ class Yun:
         self.raRunArea = data['raRunArea']
         self.raDislikes = data['raDislikes']
         self.raMinDislikes = data['raDislikes']
-        self.myLikes = 0
         self.raSingleMileageMin = data['raSingleMileageMin'] + single_mileage_min_offset
         self.raSingleMileageMax = data['raSingleMileageMax'] + single_mileage_max_offset
         self.raCadenceMin = data['raCadenceMin'] + cadence_min_offset
@@ -148,12 +149,29 @@ class Yun:
                 print("成功删除打卡点", exclude_point)
             except ValueError:
                 print("打卡点", exclude_point, "不存在")
-        random_points = random.sample(points, self.raDislikes)
-        self.manageList = []
         self.now_dist = 0
-        self.now_time = 0
-        self.task_list = []
-        self.task_count = 0
+        i = 0
+        while (self.now_dist / 1000 > min_distance + allow_overflow_distance) or self.now_dist == 0:
+            i += 1
+            print('第' + str(i) + '次尝试...')
+            self.manageList: List[Dict] = []
+            self.now_dist = 0
+            self.now_time = 0
+            self.task_list = []
+            self.task_count = 0
+            self.myLikes = 0
+            self.generate_task(points)
+        self.now_time = int(random.uniform(min_consume, max_consume) * 60 * (self.now_dist / 1000))
+        print('打卡点标记完成！本次将打卡' + str(self.myLikes) + '个点，处理' + str(len(self.task_list)) + '个点，总计'
+              + format(self.now_dist / 1000, '.2f')
+              + '公里，将耗时' + str(self.now_time // 60) + '分' + str(self.now_time % 60) + '秒')
+        # 这三个只是初始化，并非最终值
+        self.recordStartTime = ''
+        self.crsRunRecordId = 0
+        self.userName = ''
+
+    def generate_task(self, points):
+        random_points = random.sample(points, self.raDislikes)
         for point_index, point in enumerate(random_points):
             if self.now_dist / 1000 < min_distance or self.myLikes < self.raMinDislikes:
                 self.manageList.append({
@@ -176,15 +194,6 @@ class Yun:
             while self.now_dist / 1000 < min_distance:
                 self.add_task(self.manageList[index]['point'])
                 index = (index + 1) % self.raDislikes
-
-        self.now_time = int(random.uniform(min_consume, max_consume) * 60 * (self.now_dist / 1000))
-        print('打卡点标记完成！本次将打卡' + str(self.myLikes) + '个点，处理' + str(len(self.task_list)) + '个点，总计'
-              + format(self.now_dist / 1000, '.2f')
-              + '公里，将耗时' + str(self.now_time // 60) + '分' + str(self.now_time % 60) + '秒')
-        # 这三个只是初始化，并非最终值
-        self.recordStartTime = ''
-        self.crsRunRecordId = 0
-        self.userName = ''
 
     # 每10个路径点作为一组splitPoint;
     # 若最后一组不满10个且多于1个，则将最后一组中每两个点位分取10点（含终点而不含起点），作为一组splitPoint
