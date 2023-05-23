@@ -222,7 +222,8 @@ class Yun:
                     split_point.append({
                         'point': p,
                         'runStatus': '1',
-                        'speed': format(random.uniform(self.raSingleMileageMin, self.raSingleMileageMax), '.2f')
+                        'speed': format(random.uniform(self.raSingleMileageMin, self.raSingleMileageMax), '.2f'),
+                        'isFence': 'Y'
                     })
                     if len(split_point) == split_count:
                         split_points.append(split_point)
