@@ -102,7 +102,7 @@ def school_list():
         'Accept-Encoding': 'gzip',
         'User-Agent': 'okhttp/3.12.0'
     }
-    j = json.loads(default_post('/login/schoolList', "", headers=headers, m_host=yun_host))
+    j = json.loads(default_post('/app/login/schoolList', "", headers=headers, m_host=yun_host))
     if j['code'] == 200:
         for index, item in enumerate(j['data']):
             print(str(index + 1) + "  " + item['schoolName'])
@@ -248,7 +248,8 @@ class Yun:
                     new_split_point.append({
                         'point': str(a_x + (j + 1) * d_x) + ',' + str(a_y + (j + 1) * d_y),
                         'runStatus': '1',
-                        'speed': format(random.uniform(self.raSingleMileageMin, self.raSingleMileageMax), '.2f')
+                        'speed': format(random.uniform(self.raSingleMileageMin, self.raSingleMileageMax), '.2f'),
+                        'isFence': 'Y'
                     })
                 split_points.append(new_split_point)
                 self.task_count = self.task_count + 1
