@@ -109,7 +109,7 @@ max_consume = 5.50
 #### 安装依赖
 
 ```
-pip install -r requirements
+pip install -r requirements.txt
 ```
 
 #### run
