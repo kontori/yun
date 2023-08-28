@@ -52,7 +52,7 @@ Key名称随便，服务平台选择**Web服务**，IP白名单留空即可。�
 ```
 [Yun]
 # 云运动服务器的完整Url，一般来说不需要更改
-yun_host = https://sports.yzhiee.com
+yun_host = https://sports.yzhiee.com:8085
 # 学校服务器的完整url，例如合工大的为http://210.45.246.53:8080，请一定不要遗漏 http:// 
 # 如选择在初次启动时登录，会自动获取该地址，可留空
 # 注：有些学校服务器的ip为内网ip，可能需要使用校园网
