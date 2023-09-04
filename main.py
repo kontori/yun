@@ -8,6 +8,7 @@ import os
 from typing import List, Dict
 
 from pyDes import des, CBC, PAD_PKCS5
+import traceback
 
 """
 加密模式：DES/CBC/pkcs5padding
@@ -376,4 +377,5 @@ if __name__ == '__main__':
     except Exception as e:
         print('任务失败！检查token、高德地图开发者密钥或网络设置')
         print(e)
+        print(traceback.format_exc())
         input()
